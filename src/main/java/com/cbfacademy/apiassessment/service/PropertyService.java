@@ -1,27 +1,42 @@
-package com.example.demospringboot.service;
+package com.cbfacademy.apiassessment.service;
 
-import com.example.demospringboot.model.Property;
-import com.example.demospringboot.data.PropertyDTO;
+import com.cbfacademy.apiassessment.data.FileHandler;
+import com.cbfacademy.apiassessment.data.PropertyDTO;
+import com.cbfacademy.apiassessment.model.Property;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
+/**
+ * CRUD operations for properties
+ * C - create new property
+ * R - read all/read by ID
+ * U - update property by ID
+ * D - delete property by ID
+ */
 @Service
 public class PropertyService {
-    private HashMap<Integer, PropertyDTO> propertyDB = new HashMap<Integer, PropertyDTO>();
-    private Integer counter = 0;
 
-    public PropertyDTO create(Property property){
-        PropertyDTO dto = new PropertyDTO(property);
-        dto.setId(counter);
+    @Autowired
+    private FileHandler fileHandler;
 
-        propertyDB.put(counter, dto);
-        counter++;
-
-        return dto;
+    public PropertyDTO create(Property property) throws IOException {
+        return fileHandler.write(property);
     }
 
-    public HashMap<Integer, PropertyDTO> read(){
-        return propertyDB;
+    public List<PropertyDTO> read() throws FileNotFoundException {
+        return fileHandler.read();
+    }
+
+    public void delete(Integer id) throws IOException {
+        fileHandler.delete(id);
+    }
+
+    public PropertyDTO readById(Integer id) throws FileNotFoundException {
+        return fileHandler.readById(id);
     }
 }

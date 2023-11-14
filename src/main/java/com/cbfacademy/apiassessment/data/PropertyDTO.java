@@ -1,6 +1,6 @@
-package com.example.demospringboot.data;
+package com.cbfacademy.apiassessment.data;
 
-import com.example.demospringboot.model.Property;
+import com.cbfacademy.apiassessment.model.Property;
 
 public class PropertyDTO extends Property {
     private int id;

@@ -1,7 +1,6 @@
-package com.example.demospringboot.model;
+package com.cbfacademy.apiassessment.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 public class Property {
     private Address address;

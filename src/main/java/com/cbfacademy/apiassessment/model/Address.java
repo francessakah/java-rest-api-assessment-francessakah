@@ -1,4 +1,4 @@
-package com.example.demospringboot.model;
+package com.cbfacademy.apiassessment.model;
 
 public class Address {
     private String houseNumber = null;
