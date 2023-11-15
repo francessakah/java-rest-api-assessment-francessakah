@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,5 +37,9 @@ public class PropertyService {
 
     public PropertyDTO readById(Integer id) throws FileNotFoundException {
         return fileHandler.readById(id);
+    }
+
+    public PropertyDTO update(Integer id, PropertyDTO propertyDTO) throws IOException {
+        return fileHandler.update(id, propertyDTO);
     }
 }

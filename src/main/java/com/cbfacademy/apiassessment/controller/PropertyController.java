@@ -37,4 +37,9 @@ public class PropertyController {
         return service.readById(id);
     }
 
+    @PostMapping("/{id}")
+    public PropertyDTO update(@RequestBody Integer id, PropertyDTO propertyDTO) throws IOException {
+        return service.update(id, propertyDTO);
+    }
+
 }

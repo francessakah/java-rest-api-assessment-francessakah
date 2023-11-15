@@ -6,7 +6,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -101,6 +100,36 @@ public class FileHandler {
     public PropertyDTO readById(Integer id) throws FileNotFoundException {
         List<PropertyDTO> list = read().stream().filter(propertyDTO -> propertyDTO.getId() == id).toList();
         return list.get(0);
+    }
+
+    // public PropertyDTO(Integer id, PropertyDTO propertyDTO){
+// read()
+// get item by id
+// update fields
+// write entire list to file again
+    //update
+
+    public PropertyDTO update(Integer id, Property property) throws IOException {
+        List<PropertyDTO> list = read();
+        PropertyDTO currentProperty = readById(id);
+
+        property.setAddress(currentProperty.getAddress());
+        property.setNoOfBedrooms(currentProperty.getNoOfBedrooms());
+        property.setPurchasePrice(currentProperty.getPurchasePrice());
+        property.setSizeBySqrFoot(currentProperty.getSizeBySqrFoot());
+
+        List<PropertyDTO> listToSave = list.stream().map(propertyDTO -> {
+            if (propertyDTO.getId() == id) {
+                return currentProperty;
+            }
+            return propertyDTO;
+        }).toList();
+
+        try (Writer writer = new FileWriter(FILE_PATH)) {
+            Gson gson = new GsonBuilder().create();
+            gson.toJson(listToSave, writer);
+        }
+        return currentProperty;
     }
 }
 
