@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class Property {
     private Address address;
     private int noOfBedrooms;
-    private double sizeBySqrFoot;
+    private double priceBySqrFoot;
 //    private LocalDate purchaseDate;
     private BigDecimal purchasePrice;
 
@@ -26,12 +26,12 @@ public class Property {
         this.noOfBedrooms = noOfBedrooms;
     }
 
-    public double getSizeBySqrFoot() {
-        return sizeBySqrFoot;
+    public double getPriceBySqrFoot() {
+        return priceBySqrFoot;
     }
 
-    public void setSizeBySqrFoot(double sizeBySqrFoot) {
-        this.sizeBySqrFoot = sizeBySqrFoot;
+    public void setPriceBySqrFoot(double priceBySqrFoot) {
+        this.priceBySqrFoot = priceBySqrFoot;
     }
 
 //    public LocalDate getPurchaseDate() {

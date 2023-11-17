@@ -1,14 +1,14 @@
 [
   {
-    "id": 2,
+    "id": 1,
     "address": {
-      "houseNumber": "27",
-      "streetName": "Meadow Road",
-      "postcode": "RM9 5PD"
+      "houseNumber": "1489",
+      "streetName": "Darleen Port",
+      "postcode": "SE15 2TJ"
     },
-    "noOfBedrooms": 2,
-    "priceBySqrFoot": 900.0,
-    "purchasePrice": 350000
+    "noOfBedrooms": 3,
+    "priceBySqrFoot": 1798.65,
+    "purchasePrice": 766274.47
   },
   {
     "id": 2,
@@ -13187,27 +13187,5 @@
     "noOfBedrooms": 4,
     "priceBySqrFoot": 2661.3,
     "purchasePrice": 368649.22
-  },
-  {
-    "id": 1200,
-    "address": {
-      "houseNumber": "27",
-      "streetName": "Meadow Road",
-      "postcode": "RM9 5PD"
-    },
-    "noOfBedrooms": 2,
-    "priceBySqrFoot": 900.0,
-    "purchasePrice": 350000
-  },
-  {
-    "id": 1201,
-    "address": {
-      "houseNumber": "27",
-      "streetName": "Meadow Road",
-      "postcode": "RM9 5PD"
-    },
-    "noOfBedrooms": 2,
-    "priceBySqrFoot": 900.0,
-    "purchasePrice": 350000
   }
 ]

@@ -1,6 +1,6 @@
 package com.cbfacademy.apiassessment.controller;
 
-import com.cbfacademy.apiassessment.data.PropertyDTO;
+import com.cbfacademy.apiassessment.data.PropertyData;
 import com.cbfacademy.apiassessment.model.Property;
 import com.cbfacademy.apiassessment.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -18,12 +17,12 @@ public class PropertyController {
     private PropertyService service;
 
     @PostMapping
-    public PropertyDTO create(@RequestBody Property property) throws IOException {
+    public PropertyData create(@RequestBody Property property) throws IOException {
         return service.create(property);
     }
 
     @GetMapping
-    public List<PropertyDTO> read() throws FileNotFoundException {
+    public List<PropertyData> read() throws FileNotFoundException {
         return service.read();
     }
 
@@ -33,13 +32,19 @@ public class PropertyController {
     }
 
     @GetMapping("/{id}")
-    public PropertyDTO readById(@PathVariable Integer id) throws FileNotFoundException {
+    public PropertyData readById(@PathVariable Integer id) throws FileNotFoundException {
         return service.readById(id);
     }
 
-    @PostMapping("/{id}")
-    public PropertyDTO update(@RequestBody Integer id, PropertyDTO propertyDTO) throws IOException {
-        return service.update(id, propertyDTO);
+    @PutMapping("/{id}")
+    public PropertyData update(@PathVariable Integer id, @RequestBody Property property) throws IOException {
+        return service.update(id, property);
     }
+
+    @GetMapping("/areacode/{areacode}/average-sqrfoot-price")
+    public String getAverageSqrFootPrice(@PathVariable String areacode){
+        return service.getAverageSqrFootPrice(areacode);
+    }
+
 
 }

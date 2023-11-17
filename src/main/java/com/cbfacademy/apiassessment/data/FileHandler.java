@@ -12,124 +12,142 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+
 public class FileHandler {
-    private Gson gson = new Gson();
-    private final String FILE_PATH = "C:\\Projects\\codingblackfemales\\java-rest-api-assessment-francessakah\\src\\main\\resources\\properties.json";
+    public static String FILE_PATH = "src/main/resources/properties.json";
 
     /**
-     * read the properties.json for a list of propertyDTO
-     * if none, then it will return null
-     * @return
-     * @throws FileNotFoundException
+     * Read the json file for a list of propertyData
+     * @return list of property data. If none, then it will return an empty list
      */
-    public List<PropertyDTO> read() throws FileNotFoundException {
-        JsonReader reader = new JsonReader(new FileReader(FILE_PATH));
-        Type propertyMapType = new TypeToken<List<PropertyDTO>>() {}.getType();
-        return gson.fromJson(reader, propertyMapType);
+    public static List<PropertyData> read() {
+        List<PropertyData> list = new ArrayList<>();
+
+        try {
+            Type type = new TypeToken<List<PropertyData>>() {}.getType();
+            Gson gson = new Gson();
+            JsonReader reader = new JsonReader(new FileReader(FILE_PATH));
+            list = gson.fromJson(reader, type);
+        } catch (FileNotFoundException e) {
+            // no file found return empty list
+        }
+
+        if(list == null){
+            return new ArrayList<>();
+        }
+
+        return list;
     }
 
     /**
-     * 1) find the next ID based on the last entry in the properties.json file
-     * 2) with this ID, we create the propertyDTO which has the ID
+     * 1) Find the next id based on the last entry in the json file
+     * 2) with this id, we create the propertyData which has the id
      * 3) if there is no current properties saved, then we create a new list to be saved
-     * 4) given that no exceptions are thrown, then we can assume the propertyDTO has been saved
-     * and we can return propertyDTO with it's appropriate ID
+     * 4) given that no exceptions are thrown, then we can assume the propertyData has been saved
+     * and we can return propertyData with it's appropriate id
      *
      * @param property
      * @return
      * @throws IOException
      */
-    public PropertyDTO write (Property property) throws IOException {
-        PropertyDTO propertyDTO = new PropertyDTO(property);
-        propertyDTO.setId(findNextId());
-        List<PropertyDTO> list = read();
+    public static PropertyData write (Property property) throws IOException {
+        Integer nextId = findNextId();
 
-        if (list == null)
-            list = new ArrayList<>();
-        list.add(propertyDTO);
+        PropertyData data = new PropertyData(property, findNextId());
 
-        try (Writer writer = new FileWriter(FILE_PATH)) {
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(list, writer);
+        if (nextId == 1) {
+            saveFile(List.of(data));
+            return data;
         }
-        return propertyDTO;
+
+        List<PropertyData> list = read();
+        list.add(data);
+
+        saveFile(list);
+
+        return data;
     }
 
     /**
-     * this method is to return the next ID
-     * given lists are ordered based on insertion, the last element will always have the highest ID
-     * if the list is empty, then return zero
-     *
-     * @return
-     * @throws FileNotFoundException
+     * Given lists are ordered based on insertion, the last element will always have the highest id
+     * @return the next id or zero if the list is empty
      */
-    public Integer findNextId () throws FileNotFoundException {
-        List<PropertyDTO> list = read();
+    public static Integer findNextId () {
+        List<PropertyData> list = read();
 
-        if (list == null)
+        if (list.isEmpty())
             return 0;
 
         Integer listLastIndex = list.size() - 1;
-        PropertyDTO lastProperty = list.get(listLastIndex);
+        
+        PropertyData lastProperty = list.get(listLastIndex);
         return lastProperty.getId() + 1;
 
     }
 
     /**
-     * this method retrieves the list except the deleted property by its ID then writes the new list into properties.json
+     * This method retrieves the new list with property data except the deleted property given by its id.
+     * It then writes the new list into the json file
      * @param id
      * @throws IOException
      */
-    public void delete (Integer id) throws IOException {
-        List<PropertyDTO> list = read().stream().filter(propertyDTO -> propertyDTO.getId() != id).toList();
-
-        try (Writer writer = new FileWriter(FILE_PATH)) {
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(list, writer);
-        }
+    public static void delete (Integer id) throws IOException {
+        List<PropertyData> list = read();
+        PropertyData data = readById(id);
+        
+        list.remove(data);
+        saveFile(list);
     }
 
     /**
-     * this method returns the property by its ID from the properties.json
-     *
+     * This method returns the property by its given id from the json file.
      * @param id
-     * @return
-     * @throws FileNotFoundException
+     * @return null if not found or the matched property data
      */
-    public PropertyDTO readById(Integer id) throws FileNotFoundException {
-        List<PropertyDTO> list = read().stream().filter(propertyDTO -> propertyDTO.getId() == id).toList();
-        return list.get(0);
+    public static PropertyData readById(Integer id) {
+        List<PropertyData> list = read();
+        for (PropertyData data : list) {
+            if (data.getId() == id) return data;
+        }
+        
+        return null;
     }
 
-    // public PropertyDTO(Integer id, PropertyDTO propertyDTO){
-// read()
-// get item by id
-// update fields
-// write entire list to file again
-    //update
+    /**
+     * This method updates the json file by specific id with new property values given by the user.
+     * 1) first gets the entire list in the json file to update later
+     * 2) then copies the property data based on id given by the user 
+     * 3) updates the property data at the correct position in the list
+     * 4) saves the updated information in the json file
+     * @param id
+     * @param property
+     * @return updated property data
+     * @throws IOException
+     */
+    public static PropertyData update(Integer id, Property property) throws IOException {
+        List<PropertyData> list = read();
+        PropertyData currentProperty = readById(id);
 
-    public PropertyDTO update(Integer id, Property property) throws IOException {
-        List<PropertyDTO> list = read();
-        PropertyDTO currentProperty = readById(id);
+        currentProperty.copy(property);
 
-        property.setAddress(currentProperty.getAddress());
-        property.setNoOfBedrooms(currentProperty.getNoOfBedrooms());
-        property.setPurchasePrice(currentProperty.getPurchasePrice());
-        property.setSizeBySqrFoot(currentProperty.getSizeBySqrFoot());
+        Integer indexOf = list.indexOf(currentProperty);
+        list.add(indexOf, currentProperty);
 
-        List<PropertyDTO> listToSave = list.stream().map(propertyDTO -> {
-            if (propertyDTO.getId() == id) {
-                return currentProperty;
-            }
-            return propertyDTO;
-        }).toList();
+        saveFile(list);
 
+        return currentProperty;
+    }
+
+    /**
+     * This method overwrites the new list into the json file.
+     * @param listToSave
+     * @throws IOException
+     */
+    private static void saveFile(List<PropertyData> listToSave) throws IOException {
         try (Writer writer = new FileWriter(FILE_PATH)) {
-            Gson gson = new GsonBuilder().create();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(listToSave, writer);
         }
-        return currentProperty;
     }
 }
 

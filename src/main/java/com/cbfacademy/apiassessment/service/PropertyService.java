@@ -1,13 +1,12 @@
 package com.cbfacademy.apiassessment.service;
 
 import com.cbfacademy.apiassessment.data.FileHandler;
-import com.cbfacademy.apiassessment.data.PropertyDTO;
+import com.cbfacademy.apiassessment.data.PropertyData;
 import com.cbfacademy.apiassessment.model.Property;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,26 +19,112 @@ import java.util.List;
 @Service
 public class PropertyService {
 
-    @Autowired
-    private FileHandler fileHandler;
-
-    public PropertyDTO create(Property property) throws IOException {
-        return fileHandler.write(property);
+    /**
+     * Add property to file with unique id
+     * @param property to saved
+     * @return property saved with id
+     */
+    public PropertyData create(Property property) {
+        try {
+            return FileHandler.write(property);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to create Property", e);
+        }
     }
 
-    public List<PropertyDTO> read() throws FileNotFoundException {
-        return fileHandler.read();
+    /**
+     * Retrieve all the properties on file in order of insertion
+     * @return list of properties with id
+     */
+    public List<PropertyData> read(){
+        return FileHandler.read();
     }
 
-    public void delete(Integer id) throws IOException {
-        fileHandler.delete(id);
+    /**
+     * Retrieve a property by id given
+     * @param id
+     * @return property with its id
+     */
+    public PropertyData readById(Integer id){
+        checkId(id);
+        return FileHandler.readById(id);
     }
 
-    public PropertyDTO readById(Integer id) throws FileNotFoundException {
-        return fileHandler.readById(id);
+    /**
+     * Update a property with a given id
+     * @param property updated property
+     * @param id property to update
+     * @return updated property with its id
+     */
+    public PropertyData update(Integer id, Property property) {
+        checkId(id);
+        try {
+            return FileHandler.update(id, property);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to update item", e);
+        }
     }
 
-    public PropertyDTO update(Integer id, PropertyDTO propertyDTO) throws IOException {
-        return fileHandler.update(id, propertyDTO);
+    /**
+     * Property to delete
+     * @param id property to delete
+     */
+    public void delete(Integer id) {
+        try {
+            checkId(id);
+            FileHandler.delete(id);
+        } catch (IOException e){
+            throw new RuntimeException("Unable to delete item", e);
+        }
     }
+
+    public String getAverageSqrFootPrice(String areacode) {
+        List<PropertyData> propertiesInAreacode = searchByLondonAreaCode(areacode);
+        Double total = Double.valueOf(0.0);
+
+        if(propertiesInAreacode.isEmpty()){
+            return "No postcodes with area code " + areacode;
+        }
+
+        for (PropertyData property : propertiesInAreacode) {
+            total = total + property.getPriceBySqrFoot();
+        }
+
+        return String.format("%.2f", (total / propertiesInAreacode.size()));
+
+    }
+
+    /**
+     * As the array stored is in insertion order
+     * A linear search is the most suitable algorithm to use
+     * other search algorithms depend on the list to be sorted first -
+     * the effort taken to sort then search outweighs a liner search
+     * @param areacode - the first part of the postcode, i.e. SE1 8AA, this is SE8 part
+     * @return the items in list that match areacode
+     */
+    private List<PropertyData> searchByLondonAreaCode(String areacode) {
+        List<PropertyData> searchResults = new ArrayList<>();
+
+        //get all the properties we have
+        List<PropertyData> propertyDataList = FileHandler.read();
+
+        for (PropertyData propertyData : propertyDataList) {
+            String postcode = propertyData.getAddress().getPostcode();
+
+            // Check if the postcode starts with the target area code
+            if (postcode.toUpperCase().startsWith(areacode.toUpperCase() + " ")) {
+                searchResults.add(propertyData);
+            }
+        }
+
+        return searchResults;
+    }
+
+    private void checkId(Integer id) {
+        if(FileHandler.readById(id) == null){
+            throw new RuntimeException("No property found with id: " + id);
+        }
+    }
+
+
 }
