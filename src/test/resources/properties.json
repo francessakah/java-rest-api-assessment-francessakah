@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "address": {
+      "houseNumber": "12A",
+      "houseName": "Barthold Estate",
+      "streetName": "Newmold way",
+      "postcode": "SW12 4RF"
+    },
+    "noOfBedrooms": 5,
+    "priceBySqrFoot": 100.0,
+    "purchasePrice": 340000
+  },
+  {
+    "id": 2,
+    "address": {
+      "houseNumber": "12A",
+      "houseName": "Barthold Estate",
+      "streetName": "Newmold way",
+      "postcode": "SW12 4RF"
+    },
+    "noOfBedrooms": 5,
+    "priceBySqrFoot": 100.0,
+    "purchasePrice": 340000
+  }
+]

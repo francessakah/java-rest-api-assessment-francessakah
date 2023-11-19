@@ -1,204 +1,108 @@
-# **Java API Assessment**
+# Property API - README
 
-## **Introduction**
-Dive into the world of API development using Java and SpringBoot. We're handing over a skeleton codebase; your challenge is to shape a top-notch API from it.
+## Table of contents
+1) Description
+2) Get started
+3) Folder Structure
+4) API's
+5) Technology used
+6) Unit Test
 
-You can build any API of your choosing, but it must include the following:
+## Description
+This simple rest-api app aims to facilitate access to a users property portfolio electronically.
+It also allows the user to create, read, delete and update information about his/her individual properties within
+the user's portfolio in a single application. The information is saved into
 
-1. At least one algorithm
-1. Unit test at least one class
-1. Store the data in a JSON file 
-1. Exception handling 
-1. Evidence of inheritance
-1. Good use of HTTP Protocols - methods, request and response, have full CRUD operations supported 
-1. Documentation
+## Get started
+To get started run the App.java Spring Boot application
 
-### **Learning Outcomes:**
-
-By the end of this assessment, you should be able to:
-
-1. **Design and Architect APIs**: Get to grips with the nitty-gritty of curating a top-quality API, focusing on data flow and endpoint interactions.
-1. **Implement Best Practices**: Showcase your adherence to Java & SpringBoot coding standards, error handling, and optimal project structure.
-1. **Code Integration**: Seamlessly combine your creations with the provided skeleton codebase.
-1. **Exception Management**: Efficiently handle exceptions, ensuring your API remains sturdy and dependable.
-
-Onward with this assessment, you're set for a deep dive into API development with Java and SpringBoot.
-
-## **Design & Requirements**
-
-### **Design Considerations:**
-- **API Flow**: Map out your API's progression, from endpoints to their functionalities.
-
-### **Requirements List:**
-- **Core**: Make use of Java and SpringBoot.
-- **End Points**: Ensure they are detailed and fully operational.
-- **Error Handling**: Your API should handle mishaps gracefully and return informative feedback.
-
-### **Learning Outcomes:**
-- Acknowledge the pivotal role of a focused design in APIs.
-- See firsthand how a detailed requirements list can pave the way for successful development.
-
-## **Repository Management**
-
-- **Consistent Commits**: Commit often, capturing your progress and thought process.
-- **README**: Not just an afterthought. Fill it with the essence of your API, setup instructions, and other salient details.
-
-### **Learning Outcomes:**
-- Hone your skills in effective version control.
-- Recognise the value of a well-curated repository.
-
-## **Code Quality & Structure**
-
-- **Best Practices**: Stick to Java and SpringBoot best practices and conventions.
-- **Modularity**: Your code should be modular, reusable, and easily comprehensible.
-
-#### **Learning Outcomes:**
-- Craft clean, efficient, and maintainable code.
-- Harness Java and SpringBoot to the fullest.
-
----
-
-## Getting Started
-
-- [Prerequisites](#prerequisites)
-
-- [Setup](#setup)
+To run tests run mvn tests
 
 ### Prerequisites
+You will require the following to get started
+- Java version 17
+- JDK 17 (or higher)
+- Connection to internet to download maven dependencies
 
-Before you begin, make sure you have the following installed:
+## Folder Structure
+The folder structure follows the Spring Boot conventions
+- `Controller`: Receives API requests
+- `Data`: Contains all things data, FileHandler to read/write data to json file and PropertyData, the class type that is saved.
+- `Model`: Contains the class types shared throughout the packages
+- `Service`: Responsible for all logic and handling of data
 
-1. [JDK 17](https://learn.microsoft.com/en-gb/java/openjdk/download#openjdk-17) (or higher)
+The flow of data is `Users API request` > `Controller` > `Service` > `Data` > `Service` > `Controller` > `User API response`
 
-2. [Git](https://git-scm.com/downloads)
+## API's
+API's available are:
 
-3. [Visual Studio Code](https://code.visualstudio.com/Download)
-   1. [Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
-   2. [Spring Boot Extension Pack](https://marketplace.visualstudio.com/items?itemName=vmware.vscode-boot-dev-pack)
+| Method | Path                                    | Request  | Response           | Description                                             |
+|--------|-----------------------------------------|----------|--------------------|---------------------------------------------------------|
+| POST   | /properties                             | Property | PropertyData       | Create Property                                         |
+| GET    | /properties                             |          | List<PropertyData> | Read all Properties                                     |
+| GET    | /properties/{id}                        |          | PropertyData       | Read Property by Id                                     |
+| PUT    | /properties/{id}                        | Property | PropertyData       | Update Property                                         |
+| DELETE | /properties/{id}                        |          |                    | Delete Property by Id                                   |
+| GET    | /properties/areacode/{areacode}/average |          | Double             | Average of price per sqr foot on first half of Postcode |
 
-Also make sure you have accounts for the following:
-
-1. [GitHub](https://github.com/signup)
-
-### Setup
-
-#### 1. Clone the Repository
-
-```sh
-git clone [REPO_URL]
-cd [REPO_NAME]
+Property request example:
+```json
+{
+    "address": {
+        "houseNumber": "22",
+        "houseName": "Melrose way",
+        "streetName": "Bermondsey Street",
+        "postcode": "SE1 4AV"
+    },
+    "noOfBedrooms": 2,
+    "priceBySqrFoot": 10.40,
+    "purchasePrice": 10000.00
+}
 ```
 
-Replace [REPO_URL] with the link to your GitHub repository and [REPO_NAME] with the repository's name.
-
-#### 2. Install Dependencies
-
-Open a terminal at the root of the repo directory and run the following command to install the dependencies:
-
-```sh
-./mvnw clean dependency:resolve
+PropertyData response Example
+```json
+{
+    "id": 1234,
+    "address": {
+        "houseNumber": "22",
+        "houseName": "Melrose way",
+        "streetName": "Bermondsey Street",
+        "postcode": "SE1 4AV"
+    },
+    "noOfBedrooms": 2,
+    "priceBySqrFoot": 10.40,
+    "purchasePrice": 10000.00
+}
 ```
 
-If you are on a Windows machine, that will be:
-```cmd
-mvnw clean dependency:resolve
-```
+The Property.java class does not have the id property within it. 
+This was to ensure that the integrity of the id was managed by the service.
+This is set at creation and cannot be changed thereafter.
+For this reason, only the property is passed in the request. 
+The PropertyData is the response containing the id.
 
-You should see console output similar to the following:
+The id is responsible for most of the CRUD operations.
 
-```sh
-[INFO] Scanning for projects...
-[INFO] 
-[INFO] -------------------< com.cbfacademy:api-assessment >--------------------
-[INFO] Building api-assessment 0.0.1-SNAPSHOT
-[INFO]   from pom.xml
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- clean:3.2.0:clean (default-clean) @ api-assessment ---
-[INFO] Deleting /Users/user/Dev/cbfacademy/java-api-assessment/target
-...
-[truncated output]
-...
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  3.060 s
-[INFO] Finished at: 2023-10-03T16:18:25+01:00
-[INFO] ------------------------------------------------------------------------
-```
+To ensure that the only difference between Property and PropertyData is the id,
+PropertyData extends Property. 
 
-#### 3. Running the Application
+## Technologies Used
+Dependencies:
+- GSON: to transform Java objects into JSON, and save data to file
+- Spring Boot: to handle API requests
 
-To start the API in VS Code, press `F5` or tap the 'Play' icon for the `api-assessment` app in the Spring Boot Dashboard.
+Since CRUD is the most of the API operations it was important to read and update/delete as the user
+chooses. A list was chosen to handle the functionality as HashMaps cannot ensure order of insertion.
 
-Alternatively, to start the API from the terminal, run the following command:
+For ensuring the id was unique this was important.
 
-```sh
-./mvnw spring-boot:run
-```
+As the data saved was in order of insertion, then the last id was always the biggest.
 
-Or on Windows:
+Also with this in mind, when searching, the best algorithm to use was Linear Search as other
+algorithms meant that the list should be sorted. The computational efforts to sort then search outweighed the efforts
+to Linear Search efforts.
 
-```cmd
-mvnw spring-boot:run
-```
-
-You should see console output similar to the following (press `Ctrl + C` to exit):
-
-```sh
-[INFO] Scanning for projects...
-[INFO] 
-[INFO] -------------------< com.cbfacademy:api-assessment >--------------------
-[INFO] Building api-assessment 0.0.1-SNAPSHOT
-[INFO]   from pom.xml
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- clean:3.2.0:clean (default-clean) @ api-assessment ---
-[INFO] Deleting /Users/gary/Dev/cbfacademy/java-api-assessment/target
-[INFO] 
-[INFO] >>> spring-boot:3.1.4:run (default-cli) > test-compile @ api-assessment >>>
-[INFO] 
-[INFO] --- resources:3.3.1:resources (default-resources) @ api-assessment ---
-[INFO] Copying 1 resource from src/main/resources to target/classes
-[INFO] Copying 0 resource from src/main/resources to target/classes
-...
-[truncated output]
-...
-2023-10-03T17:17:34.413+01:00  INFO 35536 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2023-10-03T17:17:34.751+01:00  INFO 35536 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2023-10-03T17:17:34.756+01:00  INFO 35536 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2023-10-03T17:17:34.756+01:00  INFO 35536 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
-2023-10-03T17:17:34.777+01:00  INFO 35536 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2023-10-03T17:17:34.778+01:00  INFO 35536 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 364 ms
-2023-10-03T17:17:34.898+01:00  INFO 35536 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2023-10-03T17:17:34.907+01:00  INFO 35536 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2023-10-03T17:17:34.911+01:00  INFO 35536 --- [  restartedMain] com.cbfacademy.apiassessment.App         : Started App in 0.643 seconds (process running for 0.786)
-```
-
-Open your browser and navigate to `http://localhost:8080`.
-
-## **Deliverables**
-
-Ensure that your work is merged to the `main` branch of your GitHub repository by the specified deadline (original or extended). Your solution will assessed based on its state *at that point*; any later commits will **not** be taken into account.
-
-## FAQs
-
-- Q: How can I process JSON in Java?
-    
-    A: There are a number of open-source packages that you can use to manipulate JSON. We recommend [Gson](https://github.com/google/gson), but you can also investigate alternatives like [json-simple](https://github.com/cliftonlabs/json-simple) or [Jackson](https://github.com/FasterXML/jackson-databind/).
-
-- Q: Can I use another IDE I'm more familiar with instead of VS Code, like IntelliJ or Eclipse?
-
-    A: You can if you wish, but only VS Code is formally supported by CBF Academy staff, so you do so at your own risk.
-
-## Top Tips
-
-- :camera_flash: Commit frequently and use meaningful commit messages. A granular, well-labelled history becomes an increasingly valuable asset over time.
-- :cactus: Use feature branches. Build the habit of isolating your changes for specific tasks and merging them into your default branch when complete.
-- :vertical_traffic_light: Use consistent naming conventions. Choose easily understandable names and naming patterns for your classes, functions and variables.
-- :triangular_ruler: Keep your code tidy. Using the built-in formatting of VS Code or other IDEs makes your code easier to read and mistakes easier to spot.
-- :books: Read the docs. Whether via Intellisense in your IDE, or browsing online documentation, build a clear understanding of the libraries your code leverages.
-- :calendar: Don't wait until the last minute. Plan your work early and make the most of the time available to complete the assessment and avoid pre-deadline palpitations.
-- :sos: Ask. :clap: For. :clap: Help! :clap: Your mentors, instructors and assistants are literally here to support you, so *make use of them* - don't sit and struggle in silence.
-
-Best of luck! Remember, it's not just about the destination; it's the journey. Happy coding! 🚀
+## Unit Test
+FileHandlerTest creates an entry in the test properties.json location before each test to ensure
+the test is independent. After each test it is then deleted again to ensure independence and fair testing
