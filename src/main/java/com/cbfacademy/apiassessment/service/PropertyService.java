@@ -78,47 +78,48 @@ public class PropertyService {
         }
     }
 
-    public String getAverageSqrFootPrice(String areacode) {
-        List<PropertyData> propertiesInAreacode = searchByLondonAreaCode(areacode);
-        Double total = Double.valueOf(0.0);
-
-        if(propertiesInAreacode.isEmpty()){
-            return "No postcodes with area code " + areacode;
-        }
-
-        for (PropertyData property : propertiesInAreacode) {
-            total = total + property.getPriceBySqrFoot();
-        }
-
-        return String.format("%.2f", (total / propertiesInAreacode.size()));
-
-    }
 
     /**
      * As the array stored is in insertion order
      * A linear search is the most suitable algorithm to use
      * other search algorithms depend on the list to be sorted first -
      * the effort taken to sort then search outweighs a liner search
-     * @param areacode - the first part of the postcode, i.e. SE1 8AA, this is SE8 part
-     * @return the items in list that match areacode
+     * @param postcode - the first part of the postcode, i.e. SE1 8AA, this is SE8 part
+     * @return the items in list that match postcode
      */
-    private List<PropertyData> searchByLondonAreaCode(String areacode) {
+    private List<PropertyData> searchByLondonAreaCode(String postcode) {
         List<PropertyData> searchResults = new ArrayList<>();
 
         //get all the properties we have
         List<PropertyData> propertyDataList = FileHandler.read();
 
         for (PropertyData propertyData : propertyDataList) {
-            String postcode = propertyData.getAddress().getPostcode();
+            postcode = propertyData.getAddress().getPostcode();
 
             // Check if the postcode starts with the target area code
-            if (postcode.toUpperCase().startsWith(areacode.toUpperCase() + " ")) {
+            if (postcode.toUpperCase().startsWith(postcode.toUpperCase() + " ")) {
                 searchResults.add(propertyData);
             }
         }
 
         return searchResults;
     }
+    public String getAverageSqrFootPrice(String postcode) {
+        List<PropertyData> propertiesInAreacode = searchByLondonAreaCode(postcode);
+        Double total = Double.valueOf(0.0);
+
+        if(propertiesInAreacode.isEmpty()){
+            return "No postcodes with area code " + postcode;
+        }
+
+        for (PropertyData property : propertiesInAreacode) {
+            total = total + property.getSizeInSqrFoot();
+        }
+
+        return String.format("%.2f", (total / propertiesInAreacode.size()));
+
+    }
+
 
     private void checkId(Integer id) {
         if(FileHandler.readById(id) == null){

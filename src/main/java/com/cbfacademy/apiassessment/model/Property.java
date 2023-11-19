@@ -5,8 +5,7 @@ import java.math.BigDecimal;
 public class Property {
     private Address address;
     private int noOfBedrooms;
-    private double priceBySqrFoot;
-//    private LocalDate purchaseDate;
+    private double sizeInSqrFoot;
     private BigDecimal purchasePrice;
 
 
@@ -26,21 +25,13 @@ public class Property {
         this.noOfBedrooms = noOfBedrooms;
     }
 
-    public double getPriceBySqrFoot() {
-        return priceBySqrFoot;
+    public double getSizeInSqrFoot() {
+        return sizeInSqrFoot;
     }
 
-    public void setPriceBySqrFoot(double priceBySqrFoot) {
-        this.priceBySqrFoot = priceBySqrFoot;
+    public void setSizeInSqrFoot(double sizeInSqrFoot) {
+        this.sizeInSqrFoot = sizeInSqrFoot;
     }
-
-//    public LocalDate getPurchaseDate() {
-//        return purchaseDate;
-//    }
-//
-//    public void setPurchaseDate(LocalDate purchaseDate) {
-//        this.purchaseDate = purchaseDate;
-//    }
 
     public BigDecimal getPurchasePrice() {
         return purchasePrice;

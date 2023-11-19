@@ -25,7 +25,7 @@ public class FileHandlerTest {
 
         property.setAddress(address);
         property.setNoOfBedrooms(5);
-        property.setPriceBySqrFoot(100.00);
+        property.setSizeInSqrFoot(100.00);
         property.setPurchasePrice(new BigDecimal(340000.00));
 
         FileHandler.FILE_PATH = TEST_FILE_PATH;
@@ -90,7 +90,7 @@ public class FileHandlerTest {
         assert(data.getId() == 0);
 
         assert(0 == data.getNoOfBedrooms());
-        assert(0.0 == data.getPriceBySqrFoot());
+        assert(0.0 == data.getSizeInSqrFoot());
         assert(null == data.getPurchasePrice());
 
     }
@@ -146,7 +146,7 @@ public class FileHandlerTest {
         assert(property1.getAddress().getPostcode().equals(property1.getAddress().getPostcode()));
 
         assert(property.getNoOfBedrooms() == property1.getNoOfBedrooms());
-        assert(property.getPriceBySqrFoot() == property1.getPriceBySqrFoot());
+        assert(property.getSizeInSqrFoot() == property1.getSizeInSqrFoot());
         assert(property.getPurchasePrice().equals(property1.getPurchasePrice()));
     }
 
