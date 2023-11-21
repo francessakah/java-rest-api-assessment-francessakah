@@ -41,9 +41,9 @@ public class PropertyController {
         return service.update(id, property);
     }
 
-    @GetMapping("/postcode/{postcode}/average-sqrfoot-price")
-    public String getAverageSqrFootPrice(@PathVariable String postcode){
-        return service.getAverageSqrFootPrice(postcode);
+    @GetMapping("/areacode/{areacode}/average-sqrfoot-price")
+    public String getAverageSqrFootPrice(@PathVariable String areacode){
+        return service.getAverageSqrFootPrice(areacode);
     }
 
 

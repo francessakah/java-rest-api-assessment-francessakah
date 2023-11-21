@@ -9,9 +9,9 @@
 6) Unit Test
 
 ## Description
-This simple rest-api app aims to facilitate access to a users property portfolio electronically.
-It also allows the user to create, read, delete and update information about his/her individual properties within
-the user's portfolio in a single application. The information is saved into
+This simple REST API app aims to facilitate access to a user's property portfolio electronically. 
+It allows users to perform CRUD operations on individual properties within their portfolio through a single application. 
+The information is saved into a JSON file.
 
 ## Get started
 To get started run the App.java Spring Boot application
@@ -43,7 +43,7 @@ API's available are:
 | GET    | /properties/{id}                        |          | PropertyData       | Read Property by Id                                     |
 | PUT    | /properties/{id}                        | Property | PropertyData       | Update Property                                         |
 | DELETE | /properties/{id}                        |          |                    | Delete Property by Id                                   |
-| GET    | /properties/areacode/{areacode}/average |          | Double             | Average of price per sqr foot on first half of Postcode |
+| GET    | /properties/postcode/{postcode}/average |          | Double             | Average of price per sqr foot on first half of Postcode |
 
 Property request example:
 ```json

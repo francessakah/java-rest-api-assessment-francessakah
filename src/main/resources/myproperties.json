@@ -1,46 +1,46 @@
-[
-  {
-    "id": 1,
-    "address": {
-      "houseNumber": "38",
-      "streetName": "Annesley House",
-      "postcode": "SW9 6JT"
-    },
-    "noOfBedrooms": 3,
-    "sizeInSqrFoot": 960.0,
-    "purchasePrice": 480000
-  },
-  {
-    "id": 2,
-    "address": {
-      "houseNumber": "38",
-      "streetName": "Annesley House",
-      "postcode": "SW9 6JT"
-    },
-    "noOfBedrooms": 3,
-    "sizeInSqrFoot": 960.0,
-    "purchasePrice": 480000
-  },
-  {
-    "id": 3,
-    "address": {
-      "houseNumber": "38",
-      "streetName": "Annesley House",
-      "postcode": "SW9 6JT"
-    },
-    "noOfBedrooms": 3,
-    "sizeInSqrFoot": 960.0,
-    "purchasePrice": 480000
-  },
-  {
-    "id": 4,
-    "address": {
-      "houseNumber": "38",
-      "streetName": "Annesley House",
-      "postcode": "SW9 6JT"
-    },
-    "noOfBedrooms": 3,
-    "sizeInSqrFoot": 960.0,
-    "purchasePrice": 480000
-  }
-]
+//[
+//  {
+//    "id": 1,
+//    "address": {
+//      "houseNumber": "38",
+//      "streetName": "Annesley House",
+//      "postcode": "SW9 6JT"
+//    },
+//    "noOfBedrooms": 3,
+//    "sizeInSqrFoot": 960.0,
+//    "purchasePrice": 480000
+//  },
+//  {
+//    "id": 2,
+//    "address": {
+//      "houseNumber": "38",
+//      "streetName": "Annesley House",
+//      "postcode": "SW9 6JT"
+//    },
+//    "noOfBedrooms": 3,
+//    "sizeInSqrFoot": 960.0,
+//    "purchasePrice": 480000
+//  },
+//  {
+//    "id": 3,
+//    "address": {
+//      "houseNumber": "38",
+//      "streetName": "Annesley House",
+//      "postcode": "SW9 6JT"
+//    },
+//    "noOfBedrooms": 3,
+//    "sizeInSqrFoot": 960.0,
+//    "purchasePrice": 480000
+//  },
+//  {
+//    "id": 4,
+//    "address": {
+//      "houseNumber": "38",
+//      "streetName": "Annesley House",
+//      "postcode": "SW9 6JT"
+//    },
+//    "noOfBedrooms": 3,
+//    "sizeInSqrFoot": 960.0,
+//    "purchasePrice": 480000
+//  }
+//]

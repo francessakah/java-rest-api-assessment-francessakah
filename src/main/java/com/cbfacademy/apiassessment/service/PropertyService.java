@@ -6,6 +6,8 @@ import com.cbfacademy.apiassessment.model.Property;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,39 +86,43 @@ public class PropertyService {
      * A linear search is the most suitable algorithm to use
      * other search algorithms depend on the list to be sorted first -
      * the effort taken to sort then search outweighs a liner search
-     * @param postcode - the first part of the postcode, i.e. SE1 8AA, this is SE8 part
+     * @param areacode - the first part of the postcode, i.e. SE1 8AA, this is SE8 part
      * @return the items in list that match postcode
      */
-    private List<PropertyData> searchByLondonAreaCode(String postcode) {
+    private List<PropertyData> searchByLondonAreaCode(String areacode) {
         List<PropertyData> searchResults = new ArrayList<>();
 
         //get all the properties we have
         List<PropertyData> propertyDataList = FileHandler.read();
 
         for (PropertyData propertyData : propertyDataList) {
-            postcode = propertyData.getAddress().getPostcode();
+            String postcode = propertyData.getAddress().getPostcode();
 
             // Check if the postcode starts with the target area code
-            if (postcode.toUpperCase().startsWith(postcode.toUpperCase() + " ")) {
+            if (postcode.toUpperCase().startsWith(areacode.toUpperCase() + " ")) {
                 searchResults.add(propertyData);
             }
         }
 
         return searchResults;
     }
-    public String getAverageSqrFootPrice(String postcode) {
-        List<PropertyData> propertiesInAreacode = searchByLondonAreaCode(postcode);
-        Double total = Double.valueOf(0.0);
+    public String getAverageSqrFootPrice(String areacode) {
+        List<PropertyData> propertiesInAreacode = searchByLondonAreaCode(areacode);
+        BigDecimal total = BigDecimal.ZERO;
 
         if(propertiesInAreacode.isEmpty()){
-            return "No postcodes with area code " + postcode;
+            return "No postcodes with area code " + areacode;
         }
 
         for (PropertyData property : propertiesInAreacode) {
-            total = total + property.getSizeInSqrFoot();
+            total = total.add(property.getPurchasePrice().divide(
+                    BigDecimal.valueOf(property.getSizeInSqrFoot()),2, RoundingMode.HALF_UP
+            ));
         }
 
-        return String.format("%.2f", (total / propertiesInAreacode.size()));
+        return String.format("%.2f", (total.divide(
+                BigDecimal.valueOf(propertiesInAreacode.size()),2, RoundingMode.HALF_UP
+        )));
 
     }
 

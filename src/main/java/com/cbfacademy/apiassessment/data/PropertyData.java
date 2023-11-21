@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class PropertyData extends Property {
     private int id;
-    private BigDecimal estimatedPropertyValue;
+    //private BigDecimal estimatedPropertyValue;
 
     public PropertyData(Property property, Integer id){
         this.setId(id);
@@ -16,7 +16,7 @@ public class PropertyData extends Property {
         this.setNoOfBedrooms(property.getNoOfBedrooms());
         this.setSizeInSqrFoot(property.getSizeInSqrFoot());
         this.setPurchasePrice(property.getPurchasePrice());
-        this.setEstimatedPropertyValue(estimatedPropertyValue);
+        //this.setEstimatedPropertyValue(estimatedPropertyValue);
     }
 
     public int getId() {
@@ -39,18 +39,18 @@ public class PropertyData extends Property {
         return Objects.hash(id);
     }
 
-    public void calculateEstimatedPropertyValue(PropertyService propertyService) {
-        BigDecimal averageSqrFootPrice = new BigDecimal(propertyService.getAverageSqrFootPrice(getAddress().getPostcode()));
-        this.estimatedPropertyValue = averageSqrFootPrice.multiply(BigDecimal.valueOf(getSizeInSqrFoot()));
-    }
-
-    public BigDecimal getEstimatedPropertyValue() {
-        return estimatedPropertyValue;
-    }
-
-    private void setEstimatedPropertyValue(BigDecimal estimatedPropertyValue) {
-        this.estimatedPropertyValue = estimatedPropertyValue;
-    }
+//    public void calculateEstimatedPropertyValue(PropertyService propertyService) {
+//        BigDecimal averageSqrFootPrice = new BigDecimal(propertyService.getAverageSqrFootPrice(getAddress().getPostcode()));
+//        this.estimatedPropertyValue = averageSqrFootPrice.multiply(BigDecimal.valueOf(getSizeInSqrFoot()));
+//    }
+//
+//    public BigDecimal getEstimatedPropertyValue() {
+//        return estimatedPropertyValue;
+//    }
+//
+//    private void setEstimatedPropertyValue(BigDecimal estimatedPropertyValue) {
+//        this.estimatedPropertyValue = estimatedPropertyValue;
+//    }
 
     public void copy(Property property){
         this.setAddress(property.getAddress());

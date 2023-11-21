@@ -14,7 +14,7 @@ import java.util.List;
 
 
 public class FileHandler {
-    public static String FILE_PATH = "src/main/resources/myproperties.json";
+    public static String FILE_PATH = "src/main/resources/properties.json";
 
     /**
      * Read the json file for a list of propertyData
@@ -68,7 +68,7 @@ public class FileHandler {
         return data;
     }
 
-    
+
 
     /**
      * Given lists are ordered based on insertion, the last element will always have the highest id
